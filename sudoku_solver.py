@@ -11,12 +11,16 @@ sudoku = [[0,2,0,1,5,4,3,9,6],
           [2,3,9,8,4,1,5,6,7]]
 """
 
+import sys
 
-sudoku = [[0 for j in range(9)] for i in range(9)]
+sudoku = [[0 for _ in range(9)] for _ in range(9)]
 
-#Print the Sudoku
-def printSudo():
-    global sudoku
+
+# Print the Sudoku
+def print_sudo():
+    """
+    Function to Print Sudoku
+    """
     for i in range(9):
         if i % 3 == 0 and i != 0:
             print('-----------------------')
@@ -27,55 +31,63 @@ def printSudo():
                 print(sudoku[i][j])
             else:
                 print(str(sudoku[i][j]) + ' ', end='')
-    return
-    
-          
-#Check the possibilty of num to be placed at [r][c] position
-def checkPlace(r,c,num):
-    global sudoku
+
+
+# Check the possibilty of num to be placed at [row][col] position
+def check_place(row, col, num):
+    """
+    Function to check validtion of a number in a cell
+    """
     for i in range(9):
-        if sudoku[r][i] == num:
+        if sudoku[row][i] == num:
             return False
     for i in range(9):
-        if sudoku[i][c] == num:
+        if sudoku[i][col] == num:
             return False
-    x = (c//3)*3
-    y = (r//3)*3
+    grid_c = (col//3)*3
+    grid_r = (row//3)*3
     for i in range(3):
         for j in range(3):
-            if sudoku[y+i][x+j] == num:
+            if sudoku[grid_r+i][grid_c+j] == num:
                 return False
     return True
 
-#Solve the Sudoku
+
+# Solve the Sudoku
 def solve():
-    global sudoku
+    """
+    Function to solve the Sudoku
+    """
     for i in range(9):
         for j in range(9):
             if sudoku[i][j] == 0:
-                for num in range(1,10):
-                    if checkPlace(i, j, num):
+                for num in range(1, 10):
+                    if check_place(i, j, num):
                         sudoku[i][j] = num
                         solve()
                         sudoku[i][j] = 0
                 return
     print("\nThe solution is :\n")
-    printSudo()
-    exit()
+    print_sudo()
+    sys.exit()
 
-#Input the Problem
-def inSudo():
-    global sudoku
+
+# Input the Problem
+def in_sudo():
+    """
+    Function to input the Sudoku problem
+    """
     print("Enter the Sudoku Grid (Row Wise)(0 for blank cell)\n")
     for i in range(9):
         for j in range(9):
-            element = int(input(f"Element for row {i + 1} and column {j + 1} : \t"))
-            sudoku[i][j] = element if element >= 0 and element < 10 else 0
+            element = int(
+                input(f"Element for row {i + 1} and column {j + 1} : \t"))
+            sudoku[i][j] = element if 0 <= element < 10 else 0
         print('\nEnd of Row ' + str(i + 1) + '\n')
 
 
-#Main Program
-inSudo()
+# Main Program
+in_sudo()
 print('The problem is :\n')
-printSudo()
+print_sudo()
 solve()
